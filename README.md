@@ -1,4 +1,8 @@
-# Microservice template
+# Express Rule Engine
+
+- This project is a rule engine service built using [express](https://expressjs.com/), [mongodb](https://www.mongodb.com/) and [json-rules-engine](https://www.npmjs.com/package/json-rules-engine)
+
+- The service exposes a REST API to create, update, delete and fetch rules as well as process them against a set of given facts
 
 ## Project init commands:
 

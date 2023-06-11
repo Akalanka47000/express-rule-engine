@@ -1,7 +1,7 @@
 {
-  "name": "express-microservice-template",
+  "name": "express-rule-engine",
   "version": "1.0.0",
-  "description": "express-microservice-template",
+  "description": "An integration between express and json-rules-engine",
   "author": "SLIIT-FOSS",
   "engines": {
     "node": ">=16",
@@ -29,11 +29,13 @@
     "esbuild": "0.15.10",
     "esbuild-plugin-glob": "2.2.1",
     "express": "4.16.3",
+    "express-health-middleware": "1.0.1",
     "express-http-context": "1.2.4",
     "express-rate-limit": "6.7.0",
     "helmet": "3.12.0",
     "http-errors": "2.0.0",
     "ioredis": "5.2.3",
+    "json-rules-engine": "6.1.2",
     "lodash": "4.17.10",
     "migrate-mongo": "9.0.0",
     "mongoose": "^6.3.4",
@@ -66,6 +68,6 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sliit-foss/nodejs-templates.git"
+    "url": "git+https://github.com/akalanka47000/express-rule-engine.git"
   }
 }
