@@ -10,6 +10,11 @@ export const retrieveRuleById = (id) => {
   return Rule.findById(id).lean();
 };
 
+export const retrieveRuleByName = (name, clean = true) => {
+  return Rule.findOne({ name }).select((clean &&= cleanSelection))
+.lean();
+};
+
 export const retrieveRules = ({ filters = {}, sorts = {}, page, limit, clean = false } = {}) => {
   if (page && limit) {
     return Rule.paginate(filters, {

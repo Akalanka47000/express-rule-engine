@@ -12,7 +12,7 @@
     "dev": "cross-env NODE_ENV=development dotenv -- nodemon --exec babel-node src/server.js --exitcrash --enable-source-maps",
     "start": "node dist/server.js --enable-source-maps",
     "build": "node esbuild.config.js",
-    "format": "prettier --write \"**/*.{js,md}\"",
+    "format": "prettier --write \"**/*.{js,md}\" --cache",
     "lint": "eslint --ignore-path .gitignore .",
     "prepare": "husky install"
   },

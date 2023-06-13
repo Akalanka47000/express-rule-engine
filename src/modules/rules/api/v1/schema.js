@@ -13,6 +13,7 @@ export const updateRuleSchema = Joi.object({
 });
 
 export const processRuleSchema = Joi.object({
+  rule: Joi.string().required(),
   facts: Joi.alternatives().try(Joi.object(), Joi.array())
 .required(),
 });

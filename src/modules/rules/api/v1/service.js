@@ -1,18 +1,12 @@
 import { traced } from '@sliit-foss/functions';
-import { Engine } from 'json-rules-engine';
-import { saveRule, retrieveRuleById, retrieveRules, updateRuleById, deleteRuleById } from '../../repository';
+import { default as createError } from 'http-errors';
+import { default as RuleEngine } from '../../utils/engine';
+import { saveRule, retrieveRuleById, retrieveRuleByName, retrieveRules, updateRuleById, deleteRuleById } from '../../repository';
+import { cached } from '../../../../utils';
+import { ruleKey } from '../../utils';
 
-const engine = new Engine();
-
-(async function loadRules() {
-  const rules = await traced(retrieveRules)({ clean: true });
-  rules.forEach((rule) => engine.addRule(rule));
-})();
-
-export const addRule = async (rule) => {
-  const result = await traced(saveRule)(rule);
-  engine.addRule(rule);
-  return result;
+export const addRule = (rule) => {
+  return traced(saveRule)(rule);
 };
 
 export const getRule = (id) => {
@@ -23,18 +17,19 @@ export const getRules = (filters, sorts, page, limit) => {
   return traced(retrieveRules)({ filters, sorts, page, limit });
 };
 
-export const updateRule = async (id, payload) => {
-  const result = await traced(updateRuleById)(id, payload, true);
-  engine.updateRule(result);
-  return result;
+export const updateRule = (id, payload) => {
+  return traced(updateRuleById)(id, payload);
 };
 
-export const deleteRule = async (id) => {
-  const rule = await traced(deleteRuleById)(id);
-  engine.removeRule(rule.name);
-  return;
+export const deleteRule = (id) => {
+  return traced(deleteRuleById)(id);
 };
 
-export const processRule = (facts) => {
+export const processRule = async (rule, facts) => {
+  rule = await cached(ruleKey(rule), () => traced(retrieveRuleByName)(rule));
+
+  if (!rule) throw createError(404, "Rule not found")
+
+  const engine = new RuleEngine([rule], { allowUndefinedFacts: true });
   return engine.run(facts);
 };

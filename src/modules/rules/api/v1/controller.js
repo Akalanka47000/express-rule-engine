@@ -63,7 +63,7 @@ rules.post(
   '/process',
   celebrate({ [Segments.BODY]: processRuleSchema }),
   tracedAsyncHandler(async function processRuleController(req, res) {
-    const result = await traced(processRule)(req.body.facts);
+    const result = await traced(processRule)(req.body.rule, req.body.facts);
     return response({
       res,
       message: 'Rule processed successfully',
