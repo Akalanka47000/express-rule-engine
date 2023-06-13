@@ -11,3 +11,8 @@ export const updateRuleSchema = Joi.object({
   conditions: Joi.object().optional(),
   event: Joi.object().optional(),
 });
+
+export const processRuleSchema = Joi.object({
+  facts: Joi.alternatives().try(Joi.object(), Joi.array())
+.required(),
+});

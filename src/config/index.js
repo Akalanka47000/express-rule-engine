@@ -10,9 +10,8 @@ class Base {
       PORT: Joi.number().optional(),
       REDIS_CONNECTION_STRING: Joi.string().optional(),
       DB_URL: Joi.string().required(),
-      APP_ENV: Joi.string()
-        .valid('local', 'development', 'qa', 'sandbox', 'production')
-        .optional(),
+      APP_ENV: Joi.string().valid('local', 'development', 'qa', 'sandbox', 'production')
+.optional(),
     };
   }
   static get values() {

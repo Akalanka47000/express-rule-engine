@@ -3,8 +3,8 @@ import { celebrate, Segments } from 'celebrate';
 import { traced, tracedAsyncHandler } from '@sliit-foss/functions';
 import { default as filterQuery } from '@sliit-foss/mongoose-filter-query';
 import { response } from '../../../../utils';
-import { addRule, getRule, getRules, updateRule, deleteRule } from './service';
-import { addRuleSchema, updateRuleSchema } from './schema';
+import { addRule, getRule, getRules, updateRule, deleteRule, processRule } from './service';
+import { addRuleSchema, updateRuleSchema, processRuleSchema } from './schema';
 
 const rules = express.Router();
 
@@ -22,7 +22,11 @@ rules.get(
   filterQuery,
   tracedAsyncHandler(async function retrieveRulesController(req, res) {
     const rules = await traced(getRules)(req.query.filter, req.query.sort, req.query.page, req.query.limit);
-    return response({ res, message: 'Rules retreived successfully', data: rules });
+    return response({
+      res,
+      message: 'Rules retreived successfully',
+      data: rules,
+    });
   }),
 );
 
@@ -30,7 +34,11 @@ rules.get(
   '/:id',
   tracedAsyncHandler(async function getSingleRuleController(req, res) {
     const rule = await traced(getRule)(req.params.id);
-    return response({ res, message: 'Rule retreived successfully', data: rule });
+    return response({
+      res,
+      message: 'Rule retreived successfully',
+      data: rule,
+    });
   }),
 );
 
@@ -48,6 +56,19 @@ rules.delete(
   tracedAsyncHandler(async function deleteRuleController(req, res) {
     const rule = await traced(deleteRule)(req.params.id);
     return response({ res, message: 'Rule deleted successfully', data: rule });
+  }),
+);
+
+rules.post(
+  '/process',
+  celebrate({ [Segments.BODY]: processRuleSchema }),
+  tracedAsyncHandler(async function processRuleController(req, res) {
+    const result = await traced(processRule)(req.body.facts);
+    return response({
+      res,
+      message: 'Rule processed successfully',
+      data: result,
+    });
   }),
 );
 

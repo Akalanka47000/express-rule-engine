@@ -8,6 +8,7 @@ const ruleSchema = new Schema(
     name: {
       type: String,
       required: true,
+      unique: true,
     },
     conditions: {
       type: SchemaTypes.Mixed,
