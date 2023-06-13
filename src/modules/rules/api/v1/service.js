@@ -2,8 +2,8 @@ import { traced } from '@sliit-foss/functions';
 import { default as createError } from 'http-errors';
 import { default as RuleEngine } from '../../utils/engine';
 import { saveRule, retrieveRuleById, retrieveRuleByName, retrieveRules, updateRuleById, deleteRuleById } from '../../repository';
-import { cached } from '../../../../utils';
 import { ruleKey } from '../../utils';
+import { redis } from '../../../../database/redis';
 
 export const addRule = (rule) => {
   return traced(saveRule)(rule);
@@ -26,7 +26,7 @@ export const deleteRule = (id) => {
 };
 
 export const processRule = async (rule, facts) => {
-  rule = await cached(ruleKey(rule), () => traced(retrieveRuleByName)(rule));
+  rule = await redis.getOrDefault(ruleKey(rule), () => traced(retrieveRuleByName)(rule));
 
   if (!rule) throw createError(404, "Rule not found")
 
